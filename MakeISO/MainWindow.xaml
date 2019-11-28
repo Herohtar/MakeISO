@@ -1,0 +1,85 @@
+﻿<Window x:Class="MakeISO.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MakeISO"
+        xmlns:dnd="clr-namespace:DragAndDrop"
+        mc:Ignorable="d"
+        Title="MakeISO" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Button Content="Add File" Command="{Binding AddFileCommand}" />
+            <Button Grid.Column="1" Content="Add Folder" Command="{Binding AddFolderCommand}" />
+            <Button Grid.Row="1" Grid.ColumnSpan="2" Content="Remove Item" Command="{Binding RemoveItemCommand}" CommandParameter="{Binding SelectedItems, ElementName=FileList}" />
+            <TextBlock Grid.RowSpan="2" Grid.Column="2" Text="{Binding TotalSpaceRequired, StringFormat={}{0:N0} bytes required on disc}" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+            <TextBox Grid.Column="3" Text="{Binding VolumeName, UpdateSourceTrigger=PropertyChanged}" MaxLength="32" />
+            <Button Grid.Row="1" Grid.Column="3" Content="Write ISO" Command="{Binding WriteIsoCommand}" />
+        </Grid>
+        <ListView Grid.Row="1" Name="FileList" ItemsSource="{Binding FileList}" AllowDrop="True" dnd:DragDropHelper.IsDragDropEnabled="True" dnd:DragDropHelper.DragDropTarget="{Binding}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Icon">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding FileIconImage}" Width="16" Height="16" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding DisplayName}" />
+                    <GridViewColumn Header="Size" DisplayMemberBinding="{Binding SizeOnDisc, StringFormat={}{0:N0} bytes}" />
+                </GridView>
+            </ListView.View>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{Binding FileIconImage}" />
+                        <TextBlock Grid.Column="1" Text="{Binding DisplayName}" />
+                        <TextBlock Grid.Column="2" Text="{Binding SizeOnDisc, StringFormat={}{0} bytes}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <TextBlock Grid.Row="2" HorizontalAlignment="Center">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0} of {1} files staged">
+                    <Binding Path="FilesStaged" />
+                    <Binding Path="FileCount" />
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+        <ProgressBar Grid.Row="3" Minimum="0" Maximum="{Binding FileCount}" Value="{Binding FilesStaged}" />
+        <TextBlock Grid.Row="4" HorizontalAlignment="Center">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0:N0} of {1:N0} bytes written">
+                    <Binding Path="TotalBytesWritten" />
+                    <Binding Path="TotalBytesToWrite" />
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+        <ProgressBar Grid.Row="5" Minimum="0" Maximum="{Binding TotalBytesToWrite}" Value="{Binding TotalBytesWritten}" />
+    </Grid>
+</Window>
