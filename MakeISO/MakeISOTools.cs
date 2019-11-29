@@ -174,7 +174,7 @@ namespace MakeISO
             TotalBytesWritten = 0;
 
             var iso = new MsftFileSystemImage();
-            iso.Update += Iso_Update;
+            iso.Update += isoUpdate;
             iso.ChooseImageDefaultsForMediaType(IMAPI_MEDIA_PHYSICAL_TYPE.IMAPI_MEDIA_TYPE_DISK);
             iso.FileSystemsToCreate = FsiFileSystems.FsiFileSystemUDF;
             iso.UDFRevision = 0x250;
@@ -348,7 +348,7 @@ namespace MakeISO
             CanExecuteDelegate = p => !(AddingFiles || WritingIso) && !FileList.IsEmpty
         };
 
-        private void Iso_Update(object sender, string currentFile, int copiedSectors, int totalSectors)
+        private void isoUpdate(object sender, string currentFile, int copiedSectors, int totalSectors)
         {
             if (copiedSectors == totalSectors)
             {
