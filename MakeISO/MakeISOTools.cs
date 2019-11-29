@@ -113,6 +113,20 @@ namespace MakeISO
             set => SetProperty(ref volumeName, value);
         }
 
+        private string biosBootFile;
+        public string BiosBootFile
+        {
+            get => biosBootFile;
+            set => SetProperty(ref biosBootFile, value);
+        }
+
+        private string uefiBootFile;
+        public string UefiBootFile
+        {
+            get => uefiBootFile;
+            set => SetProperty(ref uefiBootFile, value);
+        }
+
         public MakeISOTools()
         {
             FileList = (new CollectionViewSource { Source = fileList }).View;
