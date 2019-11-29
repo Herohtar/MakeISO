@@ -1,4 +1,4 @@
-using DragAndDrop;
+﻿using DragAndDrop;
 using IMAPI2.Interop;
 using IMAPI2.MediaItem;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -304,21 +304,11 @@ namespace MakeISO
                 {
                     AddingFiles = true;
 
-                    var duplicates = 0;
-                    await Task.Run(() =>
-                    {
-                        foreach (var fileName in openFileDialog.FileNames)
-                        {
-                            if (!addFile(fileName))
-                            {
-                                duplicates++;
-                            }
-                        }
-                    });
+                    var duplicates = await Task.Run(() => addFiles(openFileDialog.FileNames));
 
-                    if (duplicates > 0)
+                    if (duplicates.Count > 0)
                     {
-                        MessageBox.Show($"{duplicates} duplicate file(s) were not added.", "Duplicate files", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show($"{duplicates.Count} duplicate file(s) were skipped.", "Duplicate files", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
 
                     AddingFiles = false;
