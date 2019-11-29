@@ -5,6 +5,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using ReactiveComponentModel;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -182,30 +183,40 @@ namespace MakeISO
                 iso.VolumeName = VolumeName;
             }
 
-            /*
-            // Make bootable ISO (WinPE)
-            var biosBootOptions = new BootOptions
+            var bootImageOptions = new List<object>();
+
+            if (File.Exists(BiosBootFile))
             {
-                Manufacturer = "Herohtar",
-                PlatformId = PlatformId.PlatformX86,
-                Emulation = EmulationType.EmulationNone
-            };
+                var biosBootOptions = new BootOptions
+                {
+                    Manufacturer = "Herohtar",
+                    PlatformId = PlatformId.PlatformX86,
+                    Emulation = EmulationType.EmulationNone
+                };
 
-            var biosBootFile = new ManagedIStream(File.OpenRead(@"D:\WinPE\fwfiles\etfsboot.com"));
-            biosBootOptions.AssignBootImage(biosBootFile);
+                var biosBootFile = new ManagedIStream(File.OpenRead(@"D:\WinPE\fwfiles\etfsboot.com"));
+                biosBootOptions.AssignBootImage(biosBootFile);
+                bootImageOptions.Add(biosBootOptions);
+            }
 
-            var uefiBootOptions = new BootOptions
+            if (File.Exists(UefiBootFile))
             {
-                Manufacturer = "Herohtar",
-                PlatformId = PlatformId.PlatformEFI,
-                Emulation = EmulationType.EmulationNone
-            };
+                var uefiBootOptions = new BootOptions
+                {
+                    Manufacturer = "Herohtar",
+                    PlatformId = PlatformId.PlatformEFI,
+                    Emulation = EmulationType.EmulationNone
+                };
 
-            var uefiBootFile = new ManagedIStream(File.OpenRead(@"D:\WinPE\fwfiles\efisys.bin"));
-            uefiBootOptions.AssignBootImage(uefiBootFile);
+                var uefiBootFile = new ManagedIStream(File.OpenRead(@"D:\WinPE\fwfiles\efisys.bin"));
+                uefiBootOptions.AssignBootImage(uefiBootFile);
+                bootImageOptions.Add(uefiBootFile);
+            }
 
-            ((IFileSystemImage2)iso).BootImageOptionsArray = new object[] { biosBootOptions, uefiBootOptions };
-            */
+            if (bootImageOptions.Count > 0)
+            {
+                ((IFileSystemImage2)iso).BootImageOptionsArray = bootImageOptions.ToArray();
+            }
 
             foreach (var item in fileList)
             {
