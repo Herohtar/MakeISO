@@ -46,7 +46,7 @@ namespace MakeISO
             CookieIdentifier = new Guid("E3D939C0-68D8-4CBD-B863-ED09B59EFC13")
         };
 
-        private readonly Subject<IMediaItem> addFile = new Subject<IMediaItem>();
+        private readonly Subject<IMediaItem> fileListNotifier = new Subject<IMediaItem>();
         private readonly ObservableCollection<IMediaItem> fileList = new ObservableCollection<IMediaItem>();
         public ICollectionView FileList { get; }
 
@@ -136,7 +136,7 @@ namespace MakeISO
 
             saveFileDialog.Filters.Add(new CommonFileDialogFilter("Disk Image", "iso"));
 
-            addFile.ObserveOnDispatcher().Subscribe(item =>
+            fileListNotifier.ObserveOnDispatcher().Subscribe(item =>
             {
                 fileList.Add(item);
                 FileCount += item.FileCount;
@@ -152,7 +152,7 @@ namespace MakeISO
             }
 
             var item = new DirectoryItem(path);
-            addFile.OnNext(item);
+            fileListNotifier.OnNext(item);
             return true;
         }
 
@@ -164,7 +164,7 @@ namespace MakeISO
             }
 
             var item = new FileItem(path);
-            addFile.OnNext(item);
+            fileListNotifier.OnNext(item);
             return true;
         }
 
