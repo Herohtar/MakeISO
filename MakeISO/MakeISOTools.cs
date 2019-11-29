@@ -144,7 +144,7 @@ namespace MakeISO
             });
         }
 
-        public bool AddFolder(string path)
+        private bool addFolder(string path)
         {
             if (isDuplicate(path, true))
             {
@@ -156,7 +156,7 @@ namespace MakeISO
             return true;
         }
 
-        public bool AddFile(string path)
+        private bool addFile(string path)
         {
             if (isDuplicate(path, false))
             {
@@ -168,7 +168,7 @@ namespace MakeISO
             return true;
         }
 
-        public void WriteIso(string path)
+        private void writeIso(string path)
         {
             FilesStaged = 0;
             TotalBytesWritten = 0;
@@ -270,7 +270,7 @@ namespace MakeISO
                 {
                     AddingFiles = true;
 
-                    if (!await Task.Run(() => AddFolder(openFolderDialog.FileName)))
+                    if (!await Task.Run(() => addFolder(openFolderDialog.FileName)))
                     {
                         MessageBox.Show("A folder with this name already exists.", "Duplicate folder", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
@@ -294,7 +294,7 @@ namespace MakeISO
                     {
                         foreach (var fileName in openFileDialog.FileNames)
                         {
-                            if (!AddFile(fileName))
+                            if (!addFile(fileName))
                             {
                                 duplicates++;
                             }
@@ -341,7 +341,7 @@ namespace MakeISO
                 if (saveFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     WritingIso = true;
-                    await Task.Run(() => WriteIso(saveFileDialog.FileName));
+                    await Task.Run(() => writeIso(saveFileDialog.FileName));
                     WritingIso = false;
                 }
             },
@@ -369,14 +369,14 @@ namespace MakeISO
             {
                 if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
                 {
-                    if (!await Task.Run(() => AddFolder(path)))
+                    if (!await Task.Run(() => addFolder(path)))
                     {
                         duplicates++;
                     }
                 }
                 else
                 {
-                    if (!await Task.Run(() => AddFile(path)))
+                    if (!await Task.Run(() => addFile(path)))
                     {
                         duplicates++;
                     }
