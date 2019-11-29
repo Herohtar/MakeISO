@@ -1,4 +1,4 @@
-﻿using DragAndDrop;
+using DragAndDrop;
 using IMAPI2.Interop;
 using IMAPI2.MediaItem;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -166,6 +166,21 @@ namespace MakeISO
             var item = new FileItem(path);
             fileListNotifier.OnNext(item);
             return true;
+        }
+
+        private List<string> addFiles(IEnumerable<string> paths)
+        {
+            var duplicates = new List<string>();
+
+            foreach (var path in paths)
+            {
+                if (!addFile(path))
+                {
+                    duplicates.Add(path);
+                }
+            }
+
+            return duplicates;
         }
 
         private void writeIso(string path)
