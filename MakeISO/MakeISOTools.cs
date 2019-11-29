@@ -390,7 +390,7 @@ namespace MakeISO
 
             if (duplicates > 0)
             {
-                MessageBox.Show($"{duplicates} duplicate item(s) were not added.", "Duplicate items", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"{duplicates} duplicate item(s) were skipped.", "Duplicate items", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
             AddingFiles = false;
