@@ -1,4 +1,4 @@
-﻿using DragAndDrop;
+using DragAndDrop;
 using IMAPI2.Interop;
 using IMAPI2.MediaItem;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -225,7 +225,7 @@ namespace MakeISO
 
                 var uefiBootFile = new ManagedIStream(File.OpenRead(UefiBootFile));
                 uefiBootOptions.AssignBootImage(uefiBootFile);
-                bootImageOptions.Add(uefiBootFile);
+                bootImageOptions.Add(uefiBootOptions);
             }
 
             if (bootImageOptions.Count > 0)
