@@ -130,6 +130,9 @@ namespace MakeISO
 
         public MakeISOTools()
         {
+            BiosBootFile = "None";
+            UefiBootFile = "None";
+
             FileList = (new CollectionViewSource { Source = fileList }).View;
             FileList.SortDescriptions.Add(new SortDescription("Type", ListSortDirection.Ascending));
             FileList.SortDescriptions.Add(new SortDescription("DisplayName", ListSortDirection.Ascending));
