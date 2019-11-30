@@ -1,4 +1,4 @@
-using DragAndDrop;
+﻿using DragAndDrop;
 using IMAPI2.Interop;
 using IMAPI2.MediaItem;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -341,6 +341,37 @@ namespace MakeISO
 
                 return !(AddingFiles || WritingIso) && hasItemsToRemove;
             }
+        };
+
+        public ICommand AddBootImagesCommand => new Command
+        {
+            ExecuteDelegate = p =>
+            {
+                if (openFolderDialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    var folder = openFolderDialog.FileName;
+
+                    var biosFile = Path.Combine(folder, "etfsboot.com");
+                    BiosBootFile = File.Exists(biosFile) ? biosFile : "None";
+
+                    var uefiFile = Path.Combine(folder, "efisys.bin");
+                    UefiBootFile = File.Exists(uefiFile) ? uefiFile : "None";
+
+                    if (BiosBootFile.Equals("None") && UefiBootFile.Equals("None"))
+                    {
+                        MessageBox.Show($"No boot images were found in the selected folder:\n\n{folder}", "No images found", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else if (BiosBootFile.Equals("None"))
+                    {
+                        MessageBox.Show($"No BIOS boot image was found in the selected folder:\n\n{folder}\n\nOnly UEFI boot will be available.", "No BIOS Boot", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else if (UefiBootFile.Equals("None"))
+                    {
+                        MessageBox.Show($"No UEFI boot image was found in the selected folder:\n\n{folder}\n\nOnly BIOS boot will be available.", "No UEFI Boot", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            },
+            CanExecuteDelegate = p => !(AddingFiles || WritingIso)
         };
 
         public ICommand WriteIsoCommand => new Command
