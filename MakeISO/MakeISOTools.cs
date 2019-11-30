@@ -230,6 +230,7 @@ namespace MakeISO
 
             if (bootImageOptions.Count > 0)
             {
+                iso.UDFRevision = 0x150; // Boot images don't work with later revisions
                 ((IFileSystemImage2)iso).BootImageOptionsArray = bootImageOptions.ToArray();
             }
 
