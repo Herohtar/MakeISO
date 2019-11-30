@@ -209,7 +209,7 @@ namespace MakeISO
                     Emulation = EmulationType.EmulationNone
                 };
 
-                var biosBootFile = new ManagedIStream(File.OpenRead(@"D:\WinPE\fwfiles\etfsboot.com"));
+                var biosBootFile = new ManagedIStream(File.OpenRead(BiosBootFile));
                 biosBootOptions.AssignBootImage(biosBootFile);
                 bootImageOptions.Add(biosBootOptions);
             }
@@ -223,7 +223,7 @@ namespace MakeISO
                     Emulation = EmulationType.EmulationNone
                 };
 
-                var uefiBootFile = new ManagedIStream(File.OpenRead(@"D:\WinPE\fwfiles\efisys.bin"));
+                var uefiBootFile = new ManagedIStream(File.OpenRead(UefiBootFile));
                 uefiBootOptions.AssignBootImage(uefiBootFile);
                 bootImageOptions.Add(uefiBootFile);
             }
