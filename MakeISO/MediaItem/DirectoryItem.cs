@@ -1,4 +1,4 @@
-﻿// Modified version of DirectoryItem from Eric Haddan (https://www.codeproject.com/Articles/24544/Burning-and-Erasing-CD-DVD-Blu-ray-Media-with-C-an)
+// Modified version of DirectoryItem from Eric Haddan (https://www.codeproject.com/Articles/24544/Burning-and-Erasing-CD-DVD-Blu-ray-Media-with-C-an)
 
 using System;
 using System.Collections.Generic;
@@ -63,7 +63,7 @@ namespace IMAPI2.MediaItem
                     var shinfo = new SHFILEINFO();
                     Win32.SHGetFileInfo(Path, 0, ref shinfo, (uint)Marshal.SizeOf(shinfo), Win32.SHGFI_ICON | Win32.SHGFI_SMALLICON);
 
-                    if (shinfo.hIcon != null)
+                    if (shinfo.hIcon != IntPtr.Zero)
                     {
                         //The icon is returned in the hIcon member of the shinfo struct
                         fileIconImage = Imaging.CreateBitmapSourceFromHIcon(shinfo.hIcon, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
