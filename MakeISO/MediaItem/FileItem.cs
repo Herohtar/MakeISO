@@ -48,7 +48,7 @@ namespace IMAPI2.MediaItem
                 {
                     // Get the File icon
                     var shinfo = new SHFILEINFO();
-                    Win32.SHGetFileInfo(Path, 0, ref shinfo, (uint)Marshal.SizeOf(shinfo), Win32.SHGFI_ICON | Win32.SHGFI_SMALLICON);
+                    Win32.SHGetFileInfo(Path, 0, ref shinfo, (uint)Marshal.SizeOf(shinfo), SHGFI.Icon | SHGFI.SmallIcon);
 
                     if (shinfo.hIcon != IntPtr.Zero)
                     {
