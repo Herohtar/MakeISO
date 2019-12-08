@@ -43,7 +43,12 @@ namespace IMAPI2.MediaItem
     {
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, SHGFI uFlags);
+        private static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, SHGFI uFlags);
+
+        public static IntPtr GetFileInfo(string filePath, uint fileAttributes, ref SHFILEINFO fileInfo, SHGFI flags)
+        {
+            return SHGetFileInfo(filePath, fileAttributes, ref fileInfo, (uint)Marshal.SizeOf(fileInfo), flags);
+        }
 
         [DllImport("user32.dll")]
         public static extern bool DestroyIcon(IntPtr handle);
