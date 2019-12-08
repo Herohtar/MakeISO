@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -61,7 +60,7 @@ namespace IMAPI2.MediaItem
                 {
                     // Get the Directory icon
                     var shinfo = new SHFILEINFO();
-                    Win32.SHGetFileInfo(Path, 0, ref shinfo, (uint)Marshal.SizeOf(shinfo), SHGFI.Icon | SHGFI.SmallIcon);
+                    Win32.GetFileInfo(Path, 0, ref shinfo, SHGFI.Icon | SHGFI.SmallIcon);
 
                     if (shinfo.hIcon != IntPtr.Zero)
                     {
