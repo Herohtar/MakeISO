@@ -56,6 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Win32\StockIconId.cs" />
+    <Compile Include="Win32\StockIconInfo.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,6 +78,7 @@
   <ItemGroup>
     <Compile Include="MakeISOTools.cs" />
     <Compile Include="Win32\GetFileInfoFlags.cs" />
+    <Compile Include="Win32\GetStockIconInfoFlags.cs" />
     <Compile Include="Win32\ShellFileInfo.cs" />
     <Compile Include="Win32\ManagedIStream.cs" />
     <Compile Include="MediaItem\DirectoryItem.cs" />

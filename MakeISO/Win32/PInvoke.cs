@@ -15,6 +15,14 @@ namespace Win32
             return SHGetFileInfo(filePath, fileAttributes, ref fileInfo, (uint)Marshal.SizeOf(fileInfo), flags);
         }
 
+        [DllImport("shell32.dll")]
+        private static extern int SHGetStockIconInfo(StockIconId siid, GetStockIconInfoFlags uFlags, [In, Out] StockIconInfo psii);
+
+        public static int GetStockIconInfo(StockIconId stockIconId, GetStockIconInfoFlags flags, ref StockIconInfo stockIconInfo)
+        {
+            return SHGetStockIconInfo(stockIconId, flags, stockIconInfo);
+        }
+
         [DllImport("user32.dll")]
         public static extern bool DestroyIcon(IntPtr handle);
     }
