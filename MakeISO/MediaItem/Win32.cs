@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace IMAPI2.MediaItem
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct SHFILEINFO
+    public struct ShellFileInfo
     {
         public IntPtr hIcon;
         public int iIcon;
@@ -16,7 +16,7 @@ namespace IMAPI2.MediaItem
     };
 
     [Flags]
-    public enum SHGFI : uint
+    public enum GetFileInfoFlags : uint
     {
         Icon = 0x000000100,              // get icon
         DisplayName = 0x000000200,       // get display name
@@ -27,7 +27,7 @@ namespace IMAPI2.MediaItem
         SysIconIndex = 0x000004000,      // get system icon index
         LinkOverlay = 0x000008000,       // put a link overlay on icon
         Selected = 0x000010000,          // show icon in selected state
-        AttrSpecified = 0x000020000,    // get only specified attributes
+        AttrSpecified = 0x000020000,     // get only specified attributes
         LargeIcon = 0x000000000,         // get large icon
         SmallIcon = 0x000000001,         // get small icon
         OpenIcon = 0x000000002,          // get open icon
@@ -43,9 +43,9 @@ namespace IMAPI2.MediaItem
     {
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        private static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, SHGFI uFlags);
+        private static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref ShellFileInfo psfi, uint cbSizeFileInfo, GetFileInfoFlags uFlags);
 
-        public static IntPtr GetFileInfo(string filePath, uint fileAttributes, ref SHFILEINFO fileInfo, SHGFI flags)
+        public static IntPtr GetFileInfo(string filePath, uint fileAttributes, ref ShellFileInfo fileInfo, GetFileInfoFlags flags)
         {
             return SHGetFileInfo(filePath, fileAttributes, ref fileInfo, (uint)Marshal.SizeOf(fileInfo), flags);
         }
