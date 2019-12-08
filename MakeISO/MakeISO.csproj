@@ -75,7 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MakeISOTools.cs" />
-    <Compile Include="Interop\ManagedIStream.cs" />
+    <Compile Include="Win32\GetFileInfoFlags.cs" />
+    <Compile Include="Win32\ShellFileInfo.cs" />
+    <Compile Include="Win32\ManagedIStream.cs" />
     <Compile Include="MediaItem\DirectoryItem.cs" />
     <Compile Include="MediaItem\FileItem.cs" />
     <Compile Include="MediaItem\IMediaItem.cs" />
