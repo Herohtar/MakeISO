@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace IMAPI2.MediaItem
+namespace Win32
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct ShellFileInfo
