@@ -39,7 +39,7 @@ namespace Win32
                                          // in the upper 8 bits of the iIcon
     }
 
-    internal class Win32
+    internal static class Native
     {
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]

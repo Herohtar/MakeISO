@@ -61,14 +61,14 @@ namespace IMAPI2.MediaItem
                 {
                     // Get the Directory icon
                     var shinfo = new ShellFileInfo();
-                    Win32.GetFileInfo(Path, 0, ref shinfo, GetFileInfoFlags.Icon | GetFileInfoFlags.SmallIcon);
+                    Native.GetFileInfo(Path, 0, ref shinfo, GetFileInfoFlags.Icon | GetFileInfoFlags.SmallIcon);
 
                     if (shinfo.hIcon != IntPtr.Zero)
                     {
                         //The icon is returned in the hIcon member of the shinfo struct
                         fileIconImage = Imaging.CreateBitmapSourceFromHIcon(shinfo.hIcon, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-                        Win32.DestroyIcon(shinfo.hIcon);
+                        Native.DestroyIcon(shinfo.hIcon);
                     }
                 }
 
