@@ -47,14 +47,14 @@ namespace IMAPI2.MediaItem
                 {
                     // Get the File icon
                     var shinfo = new ShellFileInfo();
-                    Native.GetFileInfo(Path, 0, ref shinfo, GetFileInfoFlags.Icon | GetFileInfoFlags.SmallIcon);
+                    PInvoke.GetFileInfo(Path, 0, ref shinfo, GetFileInfoFlags.Icon | GetFileInfoFlags.SmallIcon);
 
                     if (shinfo.hIcon != IntPtr.Zero)
                     {
                         //The icon handle is returned in the hIcon member of the shinfo struct
                         fileIconImage = Imaging.CreateBitmapSourceFromHIcon(shinfo.hIcon, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-                        Native.DestroyIcon(shinfo.hIcon);
+                        PInvoke.DestroyIcon(shinfo.hIcon);
                     }
                 }
 
