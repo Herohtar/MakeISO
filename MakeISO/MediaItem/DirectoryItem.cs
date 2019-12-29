@@ -77,7 +77,7 @@ namespace IMAPI2.MediaItem
         }
         private ImageSource fileIconImage = null;
 
-        public bool AddToFileSystem(IFsiDirectoryItem rootItem)
+        public bool AddToFileSystem(IFsiDirectoryItem rootItem, string basePath = "")
         {
             try
             {

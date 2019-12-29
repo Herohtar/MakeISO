@@ -65,7 +65,7 @@ namespace IMAPI2.MediaItem
 
         public string DisplayName { get; }
 
-        public bool AddToFileSystem(IFsiDirectoryItem rootItem)
+        public bool AddToFileSystem(IFsiDirectoryItem rootItem, string basePath = "")
         {
             try
             {

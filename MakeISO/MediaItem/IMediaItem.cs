@@ -42,6 +42,6 @@ namespace IMAPI2.MediaItem
         /// </summary>
         /// <param name="rootItem"></param>
         /// <returns></returns>
-        bool AddToFileSystem(IFsiDirectoryItem rootItem);
+        bool AddToFileSystem(IFsiDirectoryItem rootItem, string basePath = "");
     }
 }
