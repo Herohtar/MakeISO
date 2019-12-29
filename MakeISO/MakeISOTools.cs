@@ -269,6 +269,26 @@ namespace MakeISO
             Marshal.FreeHGlobal(bytesReadPtr);
         }
 
+        private void closeStreams(IFsiDirectoryItem directory)
+        {
+            var itemEnumerator = directory.GetEnumerator();
+            while (itemEnumerator.MoveNext())
+            {
+                var currentItem = itemEnumerator.Current;
+                if (currentItem is IFsiFileItem fileItem)
+                {
+                    if (fileItem.Data is ManagedIStream dataStream)
+                    {
+                        dataStream.Close();
+                    }
+                }
+                else if (currentItem is IFsiDirectoryItem directoryItem)
+                {
+                    closeStreams(directoryItem);
+                }
+            }
+        }
+
         private bool isDuplicate(string path, bool isFolder)
         {
             var name = Path.GetFileName(path);
