@@ -267,16 +267,23 @@ namespace MakeISO
             }
 
             Marshal.FreeHGlobal(bytesReadPtr);
+
+            // For any file >= 128 kB, the streams are not automatically cleaned up, meaning it will keep their handles open indefinitely
+            // This results in all files that were added to the ISO being locked if you try to modify them while the program is still running
+            closeStreams(iso.Root);
         }
 
         private void closeStreams(IFsiDirectoryItem directory)
         {
+            // Go through all the file items and close their streams
             var itemEnumerator = directory.GetEnumerator();
             while (itemEnumerator.MoveNext())
             {
                 var currentItem = itemEnumerator.Current;
                 if (currentItem is IFsiFileItem fileItem)
                 {
+                    // All files are added using ManagedIStream; however, any file under 128 kB is treated differently by the file system image
+                    // The small files are changed to be added using some COM implementation of IStream which gets cleaned up automatically
                     if (fileItem.Data is ManagedIStream dataStream)
                     {
                         dataStream.Close();
