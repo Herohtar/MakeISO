@@ -26,6 +26,11 @@ namespace Win32
             this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
         }
 
+        public void Close()
+        {
+            stream.Dispose();
+        }
+
         /// <summary>
         /// Read at most bufferSize bytes into buffer and return the effective
         /// number of bytes read in bytesReadPtr (unless null).
