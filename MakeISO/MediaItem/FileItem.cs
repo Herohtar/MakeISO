@@ -70,7 +70,7 @@ namespace IMAPI2.MediaItem
             try
             {
                 var stream = new ManagedIStream(File.Open(Path, FileMode.Open, FileAccess.Read, FileShare.Read));
-                rootItem.AddFile(DisplayName, stream);
+                rootItem.AddFile(System.IO.Path.Combine(basePath, DisplayName), stream);
                 return true;
             }
             catch (Exception)

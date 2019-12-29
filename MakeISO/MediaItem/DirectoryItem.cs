@@ -81,7 +81,14 @@ namespace IMAPI2.MediaItem
         {
             try
             {
-                rootItem.AddTree(Path, true);
+                // Add each file individually instead of using rootItem.AddTree so that all the streams are ManagedIStream
+                var relativePath = System.IO.Path.Combine(basePath, DisplayName);
+                rootItem.AddDirectory(relativePath);
+                foreach (var item in mediaItems)
+                {
+                    item.AddToFileSystem(rootItem, relativePath);
+                }
+
                 return true;
             }
             catch (Exception)
