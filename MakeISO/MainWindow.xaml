@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MakeISO"
         xmlns:dnd="clr-namespace:DragAndDrop"
         mc:Ignorable="d"
-        Title="MakeISO" Height="450" Width="800">
+        Title="MakeISO" Height="450" Width="800" Icon="Images/BurnCD.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
