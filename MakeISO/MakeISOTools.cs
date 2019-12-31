@@ -278,11 +278,11 @@ namespace MakeISO
             finally
             {
                 Marshal.FreeHGlobal(bytesReadPtr);
-            }
 
-            // For any file >= 128 kB, the streams are not automatically cleaned up, meaning it will keep their handles open indefinitely
-            // This results in all files that were added to the ISO being locked if you try to modify them while the program is still running
-            closeStreams(iso.Root);
+                // For any file >= 128 kB, the streams are not automatically cleaned up, meaning it will keep their handles open indefinitely
+                // This results in all files that were added to the ISO being locked if you try to modify them while the program is still running
+                closeStreams(iso.Root);
+            }
         }
 
         private void closeStreams(IFsiDirectoryItem directory)
