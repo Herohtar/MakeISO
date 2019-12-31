@@ -1,5 +1,6 @@
 ﻿// Modified version of IMediaItem from Eric Haddan (https://www.codeproject.com/Articles/24544/Burning-and-Erasing-CD-DVD-Blu-ray-Media-with-C-an)
 
+using System.Threading;
 using System.Windows.Media;
 using IMAPI2.Interop;
 
@@ -42,6 +43,6 @@ namespace IMAPI2.MediaItem
         /// </summary>
         /// <param name="rootItem"></param>
         /// <returns></returns>
-        bool AddToFileSystem(IFsiDirectoryItem rootItem, string basePath = "");
+        bool AddToFileSystem(IFsiDirectoryItem rootItem, CancellationToken cancellationToken, string basePath = "");
     }
 }

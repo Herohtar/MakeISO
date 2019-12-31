@@ -1,9 +1,10 @@
-// Modified version of DirectoryItem from Eric Haddan (https://www.codeproject.com/Articles/24544/Burning-and-Erasing-CD-DVD-Blu-ray-Media-with-C-an)
+﻿// Modified version of DirectoryItem from Eric Haddan (https://www.codeproject.com/Articles/24544/Burning-and-Erasing-CD-DVD-Blu-ray-Media-with-C-an)
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -77,7 +78,7 @@ namespace IMAPI2.MediaItem
         }
         private ImageSource fileIconImage = null;
 
-        public bool AddToFileSystem(IFsiDirectoryItem rootItem, string basePath = "")
+        public bool AddToFileSystem(IFsiDirectoryItem rootItem, CancellationToken cancellationToken, string basePath = "")
         {
             try
             {

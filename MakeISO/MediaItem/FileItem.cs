@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -65,7 +66,7 @@ namespace IMAPI2.MediaItem
 
         public string DisplayName { get; }
 
-        public bool AddToFileSystem(IFsiDirectoryItem rootItem, string basePath = "")
+        public bool AddToFileSystem(IFsiDirectoryItem rootItem, CancellationToken cancellationToken, string basePath = "")
         {
             try
             {
