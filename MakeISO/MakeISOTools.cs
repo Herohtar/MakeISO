@@ -253,20 +253,25 @@ namespace MakeISO
             var bytesRead = 0L;
             Marshal.WriteInt64(bytesReadPtr, bytesRead);
 
-            using (var outStream = File.Create(path))
+            try
             {
-                var buffer = new byte[1024 * 1024];
-
-                do
+                using (var outStream = File.Create(path))
                 {
-                    imageStream.Read(buffer, buffer.Length, bytesReadPtr);
-                    bytesRead = Marshal.ReadInt64(bytesReadPtr);
-                    TotalBytesWritten += bytesRead;
-                    outStream.Write(buffer, 0, (int)bytesRead);
-                } while (bytesRead > 0);
-            }
+                    var buffer = new byte[1024 * 1024];
 
-            Marshal.FreeHGlobal(bytesReadPtr);
+                    do
+                    {
+                        imageStream.Read(buffer, buffer.Length, bytesReadPtr);
+                        bytesRead = Marshal.ReadInt64(bytesReadPtr);
+                        TotalBytesWritten += bytesRead;
+                        outStream.Write(buffer, 0, (int)bytesRead);
+                    } while (bytesRead > 0);
+                }
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(bytesReadPtr);
+            }
 
             // For any file >= 128 kB, the streams are not automatically cleaned up, meaning it will keep their handles open indefinitely
             // This results in all files that were added to the ISO being locked if you try to modify them while the program is still running
