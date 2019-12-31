@@ -244,7 +244,8 @@ namespace MakeISO
 
             foreach (var item in fileList)
             {
-                item.AddToFileSystem(iso.Root);
+                item.AddToFileSystem(iso.Root, cancellationToken);
+                cancellationToken.ThrowIfCancellationRequested();
             }
 
             var resultImage = iso.CreateResultImage();
@@ -265,6 +266,8 @@ namespace MakeISO
 
                     do
                     {
+                        cancellationToken.ThrowIfCancellationRequested();
+
                         imageStream.Read(buffer, buffer.Length, bytesReadPtr);
                         bytesRead = Marshal.ReadInt64(bytesReadPtr);
                         TotalBytesWritten += bytesRead;
