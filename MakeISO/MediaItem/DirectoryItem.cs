@@ -80,6 +80,11 @@ namespace IMAPI2.MediaItem
 
         public bool AddToFileSystem(IFsiDirectoryItem rootItem, CancellationToken cancellationToken, string basePath = "")
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return false;
+            }
+
             try
             {
                 // Add each file individually instead of using rootItem.AddTree so that all the streams are ManagedIStream
@@ -87,7 +92,8 @@ namespace IMAPI2.MediaItem
                 rootItem.AddDirectory(relativePath);
                 foreach (var item in mediaItems)
                 {
-                    item.AddToFileSystem(rootItem, relativePath);
+                    item.AddToFileSystem(rootItem, cancellationToken, relativePath);
+                    cancellationToken.ThrowIfCancellationRequested();
                 }
 
                 return true;

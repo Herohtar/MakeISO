@@ -68,6 +68,11 @@ namespace IMAPI2.MediaItem
 
         public bool AddToFileSystem(IFsiDirectoryItem rootItem, CancellationToken cancellationToken, string basePath = "")
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return false;
+            }
+
             try
             {
                 var stream = new ManagedIStream(File.Open(Path, FileMode.Open, FileAccess.Read, FileShare.Read));
