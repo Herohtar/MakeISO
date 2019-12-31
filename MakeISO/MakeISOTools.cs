@@ -438,6 +438,15 @@ namespace MakeISO
             CanExecuteDelegate = p => !(AddingFiles || WritingIso) && !FileList.IsEmpty
         };
 
+        public ICommand CancelWriteCommand => new Command
+        {
+            ExecuteDelegate = p =>
+            {
+                tokenSource.Cancel();
+            },
+            CanExecuteDelegate = p => WritingIso
+        };
+
         private void isoUpdate(object sender, string currentFile, int copiedSectors, int totalSectors)
         {
             if (copiedSectors == totalSectors)
