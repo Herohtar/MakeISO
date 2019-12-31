@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -49,6 +50,9 @@ namespace MakeISO
 
         private readonly Subject<IMediaItem> fileListNotifier = new Subject<IMediaItem>();
         private readonly ObservableCollection<IMediaItem> fileList = new ObservableCollection<IMediaItem>();
+
+        private CancellationTokenSource tokenSource;
+
         public ICollectionView FileList { get; }
 
         private long totalBytesWritten;
@@ -187,7 +191,7 @@ namespace MakeISO
             return duplicates;
         }
 
-        private void writeIso(string path)
+        private void writeIso(string path, CancellationToken cancellationToken)
         {
             FilesStaged = 0;
             TotalBytesWritten = 0;
@@ -414,7 +418,17 @@ namespace MakeISO
                 if (saveFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     WritingIso = true;
-                    await Task.Run(() => writeIso(saveFileDialog.FileName));
+                    tokenSource = new CancellationTokenSource();
+
+                    try
+                    {
+                        await Task.Run(() => writeIso(saveFileDialog.FileName, tokenSource.Token));
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        MessageBox.Show(Application.Current.MainWindow, "Write canceled!", "Canceled", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+
                     WritingIso = false;
                 }
             },
