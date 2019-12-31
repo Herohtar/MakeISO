@@ -21,7 +21,8 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="2*" />
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -33,8 +34,9 @@
             <Button Grid.Row="1" Grid.ColumnSpan="2" Content="Remove Item" Command="{Binding RemoveItemCommand}" CommandParameter="{Binding SelectedItems, ElementName=FileList}" />
             <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding TotalSpaceRequired, StringFormat={}{0:N0} bytes required on disc}" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
             <Button Grid.RowSpan="2" Grid.Column="2" Content="Add Boot Images" Command="{Binding AddBootImagesCommand}" />
-            <TextBox Grid.Column="3" Text="{Binding VolumeName, UpdateSourceTrigger=PropertyChanged}" MaxLength="32" />
+            <TextBox Grid.Column="3" Grid.ColumnSpan="2" Text="{Binding VolumeName, UpdateSourceTrigger=PropertyChanged}" MaxLength="32" />
             <Button Grid.Row="1" Grid.Column="3" Content="Write ISO" Command="{Binding WriteIsoCommand}" />
+            <Button Grid.Row="1" Grid.Column="4" Content="Cancel" Command="{Binding CancelWriteCommand}" />
             <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding BiosBootFile, StringFormat=BIOS Boot Image: {0}}" />
             <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding UefiBootFile, StringFormat=UEFI Boot Image: {0}}" />
         </Grid>
