@@ -9,7 +9,7 @@ using STATSTG = System.Runtime.InteropServices.ComTypes.STATSTG;
 
 namespace Win32
 {
-    internal class ManagedIStream : IStream
+    internal class ManagedIStream : IStream, IDisposable
     {
         private const int STGM_READ = 0x00000000;
         private const int STGM_WRITE = 0x00000001;
@@ -19,6 +19,8 @@ namespace Win32
         private const int STREAM_SEEK_CUR = 0x1;
         private const int STREAM_SEEK_END = 0x2;
 
+        private bool disposed = false;
+
         private readonly Stream stream;
 
         internal ManagedIStream(Stream stream)
@@ -26,9 +28,29 @@ namespace Win32
             this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
         }
 
-        public void Close()
+        ~ManagedIStream()
         {
-            stream.Dispose();
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                }
+
+                stream.Dispose();
+                disposed = true;
+            }
         }
 
         /// <summary>
