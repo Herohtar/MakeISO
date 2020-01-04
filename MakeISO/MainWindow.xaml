@@ -54,20 +54,6 @@
                     <GridViewColumn Header="Size" DisplayMemberBinding="{Binding SizeOnDisc, StringFormat={}{0:N0} bytes}" />
                 </GridView>
             </ListView.View>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Image Source="{Binding FileIconImage}" />
-                        <TextBlock Grid.Column="1" Text="{Binding DisplayName}" />
-                        <TextBlock Grid.Column="2" Text="{Binding SizeOnDisc, StringFormat={}{0} bytes}" />
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
         </ListView>
         <TextBlock Grid.Row="2" HorizontalAlignment="Center">
             <TextBlock.Text>
