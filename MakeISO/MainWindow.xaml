@@ -32,7 +32,7 @@
             <Button Content="Add File" Command="{Binding AddFileCommand}" />
             <Button Grid.Column="1" Content="Add Folder" Command="{Binding AddFolderCommand}" />
             <Button Grid.Row="1" Grid.ColumnSpan="2" Content="Remove Item" Command="{Binding RemoveItemCommand}" CommandParameter="{Binding SelectedItems, ElementName=FileList}" />
-            <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding TotalSpaceRequired, StringFormat={}{0:N0} bytes required on disc}" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+            <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding FriendlyTotalSpaceRequired, StringFormat={}{0:N0} required on disc}" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
             <Button Grid.RowSpan="2" Grid.Column="2" Content="Add Boot Images" Command="{Binding AddBootImagesCommand}" />
             <TextBox Grid.Column="3" Grid.ColumnSpan="2" Text="{Binding VolumeName, UpdateSourceTrigger=PropertyChanged}" MaxLength="32" />
             <Button Grid.Row="1" Grid.Column="3" Content="Write ISO" Command="{Binding WriteIsoCommand}" />
@@ -50,8 +50,8 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding DisplayName}" />
-                    <GridViewColumn Header="Size" DisplayMemberBinding="{Binding SizeOnDisc, StringFormat={}{0:N0} bytes}" />
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding DisplayName}" Width="Auto" />
+                    <GridViewColumn Header="Size" DisplayMemberBinding="{Binding FriendlySize}" Width="Auto" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -66,9 +66,9 @@
         <ProgressBar Grid.Row="3" Minimum="0" Maximum="{Binding FileCount}" Value="{Binding FilesStaged}" />
         <TextBlock Grid.Row="4" HorizontalAlignment="Center">
             <TextBlock.Text>
-                <MultiBinding StringFormat="{}{0:N0} of {1:N0} bytes written">
-                    <Binding Path="TotalBytesWritten" />
-                    <Binding Path="TotalBytesToWrite" />
+                <MultiBinding StringFormat="{}{0} of {1} written">
+                    <Binding Path="FriendlyTotalBytesWritten" />
+                    <Binding Path="FriendlyTotalBytesToWrite" />
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>
