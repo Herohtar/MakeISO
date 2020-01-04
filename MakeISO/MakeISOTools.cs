@@ -59,22 +59,28 @@ namespace MakeISO
         public long TotalBytesWritten
         {
             get => totalBytesWritten;
-            set => SetProperty(ref totalBytesWritten, value);
+            set => SetProperty(ref totalBytesWritten, value, nameof(TotalBytesWritten), nameof(FriendlyTotalBytesWritten));
         }
+
+        public string FriendlyTotalBytesWritten => Utilities.GetBytesReadable(TotalBytesWritten);
 
         private long totalBytesToWrite;
         public long TotalBytesToWrite
         {
             get => totalBytesToWrite;
-            set => SetProperty(ref totalBytesToWrite, value);
+            set => SetProperty(ref totalBytesToWrite, value, nameof(TotalBytesToWrite), nameof(FriendlyTotalBytesToWrite));
         }
+
+        public string FriendlyTotalBytesToWrite => Utilities.GetBytesReadable(TotalBytesToWrite);
 
         private long totalSpaceRequired;
         public long TotalSpaceRequired
         {
             get => totalSpaceRequired;
-            set => SetProperty(ref totalSpaceRequired, value);
+            set => SetProperty(ref totalSpaceRequired, value, nameof(TotalSpaceRequired), nameof(FriendlyTotalSpaceRequired));
         }
+
+        public string FriendlyTotalSpaceRequired => Utilities.GetBytesReadable(TotalSpaceRequired);
 
         private bool addingFiles;
         public bool AddingFiles
