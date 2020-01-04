@@ -24,6 +24,11 @@ namespace IMAPI2.MediaItem
         long SizeOnDisc { get; }
 
         /// <summary>
+        /// Returns the size of the file or directory as a user-friendly string
+        /// </summary>
+        string FriendlySize { get; }
+
+        /// <summary>
         /// Returns the number of files represented by this item
         /// </summary>
         long FileCount { get; }

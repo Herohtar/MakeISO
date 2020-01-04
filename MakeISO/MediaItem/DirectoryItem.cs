@@ -10,6 +10,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using IMAPI2.Interop;
+using MakeISO;
 using Win32;
 
 namespace IMAPI2.MediaItem
@@ -51,6 +52,8 @@ namespace IMAPI2.MediaItem
         public string DisplayName { get; }
 
         public long SizeOnDisc => mediaItems.Sum(item => item.SizeOnDisc);
+
+        public string FriendlySize => Utilities.GetBytesReadable(SizeOnDisc);
 
         public long FileCount => mediaItems.Sum(item => item.FileCount);
 
