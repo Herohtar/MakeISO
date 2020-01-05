@@ -55,6 +55,13 @@ namespace MakeISO
 
         public ICollectionView FileList { get; }
 
+        private WriterStatus writerStatus = WriterStatus.Idle;
+        public WriterStatus WriterStatus
+        {
+            get => writerStatus;
+            set => SetProperty(ref writerStatus, value);
+        }
+
         private long totalBytesWritten;
         public long TotalBytesWritten
         {

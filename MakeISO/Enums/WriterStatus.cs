@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MakeISO
 {
-    public enum CreationStatus
+    public enum WriterStatus
     {
         Idle,
         Staging,

@@ -59,7 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Enums\CreationStatus.cs" />
+    <Compile Include="Enums\WriterStatus.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Win32\StockIconId.cs" />
     <Compile Include="Win32\StockIconInfo.cs" />
