@@ -86,7 +86,26 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
-        <ProgressBar Grid.Row="3" Minimum="0" Maximum="{Binding FileCount}" Value="{Binding FilesStaged}" />
+        <ProgressBar Grid.Row="3" Minimum="0">
+            <ProgressBar.Style>
+                <Style TargetType="ProgressBar">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WriterStatus}" Value="{x:Static local:WriterStatus.Idle}">
+                            <Setter Property="Maximum" Value="1" />
+                            <Setter Property="Value" Value="0" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WriterStatus}" Value="{x:Static local:WriterStatus.Staging}">
+                            <Setter Property="Maximum" Value="{Binding FileCount}" />
+                            <Setter Property="Value" Value="{Binding FilesStaged}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WriterStatus}" Value="{x:Static local:WriterStatus.Writing}">
+                            <Setter Property="Maximum" Value="{Binding TotalBytesToWrite}" />
+                            <Setter Property="Value" Value="{Binding TotalBytesWritten}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ProgressBar.Style>
+        </ProgressBar>
         <TextBlock Grid.Row="4" HorizontalAlignment="Center">
             <TextBlock.Text>
                 <MultiBinding StringFormat="{}{0} of {1} written">
