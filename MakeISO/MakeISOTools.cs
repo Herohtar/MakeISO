@@ -453,6 +453,11 @@ namespace MakeISO
                     {
                         MessageBox.Show(Application.Current.MainWindow, "Write canceled!", "Canceled", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
+                    finally
+                    {
+                        tokenSource.Dispose();
+                        tokenSource = null;
+                    }
 
                     WriterStatus = WriterStatus.Idle;
                     WritingIso = false;
