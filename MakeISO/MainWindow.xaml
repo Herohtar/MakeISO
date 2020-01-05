@@ -56,12 +56,35 @@
             </ListView.View>
         </ListView>
         <TextBlock Grid.Row="2" HorizontalAlignment="Center">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{}{0} of {1} files staged">
-                    <Binding Path="FilesStaged" />
-                    <Binding Path="FileCount" />
-                </MultiBinding>
-            </TextBlock.Text>
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WriterStatus}" Value="{x:Static local:WriterStatus.Idle}">
+                            <Setter Property="Text" Value="Ready" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WriterStatus}" Value="{x:Static local:WriterStatus.Staging}">
+                            <Setter Property="Text">
+                                <Setter.Value>
+                                    <MultiBinding StringFormat="{}{0} of {1} files staged">
+                                        <Binding Path="FilesStaged" />
+                                        <Binding Path="FileCount" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WriterStatus}" Value="{x:Static local:WriterStatus.Writing}">
+                            <Setter Property="Text">
+                                <Setter.Value>
+                                    <MultiBinding StringFormat="{}{0} of {1} written">
+                                        <Binding Path="FriendlyTotalBytesWritten" />
+                                        <Binding Path="FriendlyTotalBytesToWrite" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
         </TextBlock>
         <ProgressBar Grid.Row="3" Minimum="0" Maximum="{Binding FileCount}" Value="{Binding FilesStaged}" />
         <TextBlock Grid.Row="4" HorizontalAlignment="Center">
