@@ -13,8 +13,6 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="20" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -106,14 +104,5 @@
                 </Style>
             </ProgressBar.Style>
         </ProgressBar>
-        <TextBlock Grid.Row="4" HorizontalAlignment="Center">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{}{0} of {1} written">
-                    <Binding Path="FriendlyTotalBytesWritten" />
-                    <Binding Path="FriendlyTotalBytesToWrite" />
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
-        <ProgressBar Grid.Row="5" Minimum="0" Maximum="{Binding TotalBytesToWrite}" Value="{Binding TotalBytesWritten}" />
     </Grid>
 </Window>
