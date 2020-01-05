@@ -447,7 +447,7 @@ namespace MakeISO
 
                     try
                     {
-                        await Task.Run(() => writeIso(saveFileDialog.FileName, tokenSource.Token));
+                        await Task.Run(() => writeIso(saveFileDialog.FileName, tokenSource.Token), tokenSource.Token);
                     }
                     catch (OperationCanceledException)
                     {
