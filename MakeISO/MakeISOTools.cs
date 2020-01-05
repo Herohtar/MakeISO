@@ -220,83 +220,90 @@ namespace MakeISO
                 iso.VolumeName = VolumeName;
             }
 
-            var bootImageOptions = new List<object>();
-
-            if (File.Exists(BiosBootFile))
-            {
-                var biosBootOptions = new BootOptions
-                {
-                    Manufacturer = "Herohtar",
-                    PlatformId = PlatformId.PlatformX86,
-                    Emulation = EmulationType.EmulationNone
-                };
-
-                var biosBootFile = new ManagedIStream(File.OpenRead(BiosBootFile));
-                biosBootOptions.AssignBootImage(biosBootFile);
-                bootImageOptions.Add(biosBootOptions);
-            }
-
-            if (File.Exists(UefiBootFile))
-            {
-                var uefiBootOptions = new BootOptions
-                {
-                    Manufacturer = "Herohtar",
-                    PlatformId = PlatformId.PlatformEFI,
-                    Emulation = EmulationType.EmulationNone
-                };
-
-                var uefiBootFile = new ManagedIStream(File.OpenRead(UefiBootFile));
-                uefiBootOptions.AssignBootImage(uefiBootFile);
-                bootImageOptions.Add(uefiBootOptions);
-            }
-
-            if (bootImageOptions.Count > 0)
-            {
-                iso.UDFRevision = 0x150; // Boot images don't work with later revisions
-                ((IFileSystemImage2)iso).BootImageOptionsArray = bootImageOptions.ToArray();
-            }
-
-            foreach (var item in fileList)
-            {
-                item.AddToFileSystem(iso.Root, cancellationToken);
-                cancellationToken.ThrowIfCancellationRequested();
-            }
-
-            var resultImage = iso.CreateResultImage();
-            var imageStream = resultImage.ImageStream;
-
-            imageStream.Stat(out var stat, 0x01);
-            TotalBytesToWrite = stat.cbSize;
-            WriterStatus = WriterStatus.Writing;
-
-            var bytesReadPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(long)));
-            var bytesRead = 0L;
-            Marshal.WriteInt64(bytesReadPtr, bytesRead);
-
             try
             {
-                using (var outStream = File.Create(path))
+                var bootImageOptions = new List<object>();
+
+                if (File.Exists(BiosBootFile))
                 {
-                    var buffer = new byte[1024 * 1024];
-
-                    do
+                    var biosBootOptions = new BootOptions
                     {
-                        cancellationToken.ThrowIfCancellationRequested();
+                        Manufacturer = "Herohtar",
+                        PlatformId = PlatformId.PlatformX86,
+                        Emulation = EmulationType.EmulationNone
+                    };
 
-                        imageStream.Read(buffer, buffer.Length, bytesReadPtr);
-                        bytesRead = Marshal.ReadInt64(bytesReadPtr);
-                        TotalBytesWritten += bytesRead;
-                        outStream.Write(buffer, 0, (int)bytesRead);
-                    } while (bytesRead > 0);
+                    var biosBootFile = new ManagedIStream(File.OpenRead(BiosBootFile));
+                    biosBootOptions.AssignBootImage(biosBootFile);
+                    bootImageOptions.Add(biosBootOptions);
+                }
+
+                if (File.Exists(UefiBootFile))
+                {
+                    var uefiBootOptions = new BootOptions
+                    {
+                        Manufacturer = "Herohtar",
+                        PlatformId = PlatformId.PlatformEFI,
+                        Emulation = EmulationType.EmulationNone
+                    };
+
+                    var uefiBootFile = new ManagedIStream(File.OpenRead(UefiBootFile));
+                    uefiBootOptions.AssignBootImage(uefiBootFile);
+                    bootImageOptions.Add(uefiBootOptions);
+                }
+
+                if (bootImageOptions.Count > 0)
+                {
+                    iso.UDFRevision = 0x150; // Boot images don't work with later revisions
+                    ((IFileSystemImage2)iso).BootImageOptionsArray = bootImageOptions.ToArray();
+                }
+
+                foreach (var item in fileList)
+                {
+                    item.AddToFileSystem(iso.Root, cancellationToken);
+                    cancellationToken.ThrowIfCancellationRequested();
+                }
+
+                var resultImage = iso.CreateResultImage();
+                var imageStream = resultImage.ImageStream;
+
+                imageStream.Stat(out var stat, 0x01);
+                TotalBytesToWrite = stat.cbSize;
+                WriterStatus = WriterStatus.Writing;
+
+                var bytesReadPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(long)));
+                var bytesRead = 0L;
+                Marshal.WriteInt64(bytesReadPtr, bytesRead);
+
+                try
+                {
+                    using (var outStream = File.Create(path))
+                    {
+                        var buffer = new byte[1024 * 1024];
+
+                        do
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
+
+                            imageStream.Read(buffer, buffer.Length, bytesReadPtr);
+                            bytesRead = Marshal.ReadInt64(bytesReadPtr);
+                            TotalBytesWritten += bytesRead;
+                            outStream.Write(buffer, 0, (int)bytesRead);
+                        } while (bytesRead > 0);
+                    }
+                }
+                finally
+                {
+                    Marshal.FreeHGlobal(bytesReadPtr);
                 }
             }
             finally
             {
-                Marshal.FreeHGlobal(bytesReadPtr);
-
                 // For any file >= 128 kB, the streams are not automatically cleaned up, meaning their handles will remain open indefinitely
                 // This results in all files that were added to the ISO being locked if you try to modify them while the program is still running
                 disposeStreams(iso.Root);
+
+                iso.Update -= isoUpdate;
             }
         }
 
