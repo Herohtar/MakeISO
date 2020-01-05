@@ -208,6 +208,7 @@ namespace MakeISO
         {
             FilesStaged = 0;
             TotalBytesWritten = 0;
+            WriterStatus = WriterStatus.Staging;
 
             var iso = new MsftFileSystemImage();
             iso.Update += isoUpdate;
@@ -266,6 +267,7 @@ namespace MakeISO
 
             imageStream.Stat(out var stat, 0x01);
             TotalBytesToWrite = stat.cbSize;
+            WriterStatus = WriterStatus.Writing;
 
             var bytesReadPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(long)));
             var bytesRead = 0L;
@@ -445,6 +447,7 @@ namespace MakeISO
                         MessageBox.Show(Application.Current.MainWindow, "Write canceled!", "Canceled", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
 
+                    WriterStatus = WriterStatus.Idle;
                     WritingIso = false;
                 }
             },
