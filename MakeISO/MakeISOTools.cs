@@ -470,7 +470,7 @@ namespace MakeISO
         {
             ExecuteDelegate = p =>
             {
-                tokenSource.Cancel();
+                tokenSource?.Cancel();
             },
             CanExecuteDelegate = p => WritingIso
         };
