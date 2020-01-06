@@ -11,7 +11,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,7 +47,7 @@ namespace MakeISO
             CookieIdentifier = new Guid("E3D939C0-68D8-4CBD-B863-ED09B59EFC13")
         };
 
-        private readonly Subject<IMediaItem> fileListNotifier = new Subject<IMediaItem>();
+        private readonly object fileListLockObject = new object();
         private readonly ObservableCollection<IMediaItem> fileList = new ObservableCollection<IMediaItem>();
 
         private CancellationTokenSource tokenSource;
@@ -151,18 +150,12 @@ namespace MakeISO
             BiosBootFile = "None";
             UefiBootFile = "None";
 
+            BindingOperations.EnableCollectionSynchronization(fileList, fileListLockObject);
             FileList = (new CollectionViewSource { Source = fileList }).View;
             FileList.SortDescriptions.Add(new SortDescription("Type", ListSortDirection.Ascending));
             FileList.SortDescriptions.Add(new SortDescription("DisplayName", ListSortDirection.Ascending));
 
             saveFileDialog.Filters.Add(new CommonFileDialogFilter("Disk Image", "iso"));
-
-            fileListNotifier.ObserveOnDispatcher().Subscribe(item =>
-            {
-                fileList.Add(item);
-                FileCount += item.FileCount;
-                TotalSpaceRequired += item.SizeOnDisc;
-            });
         }
 
         private bool addFolder(string path)
@@ -173,7 +166,11 @@ namespace MakeISO
             }
 
             var item = new DirectoryItem(path);
-            fileListNotifier.OnNext(item);
+
+            fileList.Add(item);
+            FileCount += item.FileCount;
+            TotalSpaceRequired += item.SizeOnDisc;
+
             return true;
         }
 
@@ -185,7 +182,11 @@ namespace MakeISO
             }
 
             var item = new FileItem(path);
-            fileListNotifier.OnNext(item);
+
+            fileList.Add(item);
+            FileCount += item.FileCount;
+            TotalSpaceRequired += item.SizeOnDisc;
+
             return true;
         }
 
