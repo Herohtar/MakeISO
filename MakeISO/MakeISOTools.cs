@@ -464,7 +464,7 @@ namespace MakeISO
                     WritingIso = false;
                 }
             },
-            CanExecuteDelegate = p => !(AddingFiles || WritingIso) && !FileList.IsEmpty
+            CanExecuteDelegate = p => !(AddingFiles || WritingIso) && (FileCount > 0)
         };
 
         public ICommand CancelWriteCommand => new Command
