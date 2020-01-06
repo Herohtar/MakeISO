@@ -47,11 +47,10 @@ namespace MakeISO
             CookieIdentifier = new Guid("E3D939C0-68D8-4CBD-B863-ED09B59EFC13")
         };
 
-        private readonly object fileListLockObject = new object();
-        private readonly ObservableCollection<IMediaItem> fileList = new ObservableCollection<IMediaItem>();
-
         private CancellationTokenSource tokenSource;
 
+        private readonly object fileListLockObject = new object();
+        private readonly ObservableCollection<IMediaItem> fileList = new ObservableCollection<IMediaItem>();
         public ICollectionView FileList { get; }
 
         private WriterStatus writerStatus = WriterStatus.Idle;
