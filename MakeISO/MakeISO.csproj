@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\GreaterThanConverter.cs" />
     <Compile Include="Enums\WriterStatus.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Win32\StockIconId.cs" />
