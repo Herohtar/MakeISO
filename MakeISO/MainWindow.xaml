@@ -7,6 +7,9 @@
         xmlns:dnd="clr-namespace:DragAndDrop"
         mc:Ignorable="d"
         Title="MakeISO" Height="450" Width="800" Icon="Images/BurnCD.ico">
+    <Window.Resources>
+        <local:GreaterThanConverter x:Key="GreaterThanConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
