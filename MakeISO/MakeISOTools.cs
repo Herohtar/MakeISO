@@ -468,10 +468,7 @@ namespace MakeISO
 
         public ICommand CancelWriteCommand => new Command
         {
-            ExecuteDelegate = p =>
-            {
-                tokenSource?.Cancel();
-            },
+            ExecuteDelegate = p => tokenSource?.Cancel(),
             CanExecuteDelegate = p => WritingIso
         };
 
