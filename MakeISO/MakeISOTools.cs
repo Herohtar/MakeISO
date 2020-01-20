@@ -277,20 +277,18 @@ namespace MakeISO
 
                 try
                 {
-                    using (var outStream = File.Create(path))
+                    using var outStream = File.Create(path);
+                    var buffer = new byte[1024 * 1024];
+
+                    do
                     {
-                        var buffer = new byte[1024 * 1024];
+                        cancellationToken.ThrowIfCancellationRequested();
 
-                        do
-                        {
-                            cancellationToken.ThrowIfCancellationRequested();
-
-                            imageStream.Read(buffer, buffer.Length, bytesReadPtr);
-                            bytesRead = Marshal.ReadInt64(bytesReadPtr);
-                            TotalBytesWritten += bytesRead;
-                            outStream.Write(buffer, 0, (int)bytesRead);
-                        } while (bytesRead > 0);
-                    }
+                        imageStream.Read(buffer, buffer.Length, bytesReadPtr);
+                        bytesRead = Marshal.ReadInt64(bytesReadPtr);
+                        TotalBytesWritten += bytesRead;
+                        outStream.Write(buffer, 0, (int)bytesRead);
+                    } while (bytesRead > 0);
                 }
                 finally
                 {
